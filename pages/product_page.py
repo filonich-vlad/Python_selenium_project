@@ -24,3 +24,5 @@ class ProductPage(BasePage):
         PRODUCT_PRICE = self.browser.find_element(*PPL.PRODUCT_PRICE).text
         PRICE_IN_ALERT = self.browser.find_element(*PPL.CART_PRICE).text
         assert PRODUCT_PRICE in PRICE_IN_ALERT, "Price of the cart != price of the product"
+
+
