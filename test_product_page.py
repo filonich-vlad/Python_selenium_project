@@ -2,12 +2,13 @@ import pytest
 from .pages.product_page import ProductPage
 from .pages.locators import ProductPageLocators as PPL
 from .pages.login_page import LoginPage
-
+from .pages.basket_page import BasketPage
 
 
 product_link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207"
 links = [f"{product_link}/?promo=offer{i}" for i in range(10)]
 
+@pytest.mark.skip(reason="Too long to run.")
 @pytest.mark.parametrize('link', links)
 def test_guest_can_add_product_to_cart(browser, link):
     product_page = ProductPage(browser, link)
@@ -66,3 +67,14 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page.go_to_login_page()
     login_page =  LoginPage(browser, browser.current_url)
     login_page.should_be_login_page()
+
+@pytest.mark.basket
+def test_guest_cant_see_product_in_cart_opened_from_product_page(browser):
+    link = product_link
+    product_page = ProductPage(browser, link)
+    product_page.open()
+    product_page.go_to_basket()
+    basket_page = BasketPage(browser, browser.current_url)
+    basket_page.basket_is_empty_text()
+    basket_page.no_stuff_in_the_basket()
+    
