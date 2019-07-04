@@ -8,9 +8,9 @@ from .locators import BasePageLocators
 
 class BasePage:
     def __init__(self, browser, url, timeout=10):
+        browser.implicitly_wait(timeout)
         self.browser = browser
         self.url = url
-        self.browser.implicitly_wait(timeout)
 
         
     def open(self):
@@ -23,8 +23,12 @@ class BasePage:
 
 
     def go_to_login_page(self):
-        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
-        link.click()
+        self.browser.find_element(*BasePageLocators.LOGIN_LINK).click()
+
+
+    def go_to_profile_page(self):
+        self.browser.find_element(*BasePageLocators.ACCOUNT).click()
+        
     
 
     def is_element_present(self, how, what):
@@ -52,8 +56,14 @@ class BasePage:
         return True
 
 
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_ICON), \
+               "User icon is not presented, probably unauthorised user"
+
+
     def should_be_login_link(self):
-        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
+        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), \
+               "Login link is not presented"
 
                 
     def solve_quiz_and_get_code(self):
