@@ -9,10 +9,10 @@ from faker import Faker
 
 
 product_link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207"
-links = [f"{product_link}/?promo=offer{i}" for i in range(10)]
+links = [f"{product_link}/?promo=offer{i}" for i in range(10) if i != 7]
 
-@pytest.mark.skip(reason="Too long to run.")
 @pytest.mark.parametrize('link', links)
+@pytest.mark.need_review
 def test_guest_can_add_product_to_cart(browser, link):
     product_page = ProductPage(browser, link)
     product_page.open()
@@ -62,6 +62,7 @@ def test_guest_should_see_login_link_on_product_page(browser):
     page.should_be_login_link()
 
 
+@pytest.mark.need_review
 @pytest.mark.login
 def test_guest_can_go_to_login_page_from_product_page(browser):
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
@@ -72,6 +73,7 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     login_page.should_be_login_page()
 
 
+@pytest.mark.need_review
 @pytest.mark.basket
 def test_guest_cant_see_product_in_cart_opened_from_product_page(browser):
     link = product_link
@@ -106,7 +108,7 @@ class TestUserAddToCartFromProductPage:
         delete_profile_page = DeleteProfilePage(self.browser, self.browser.current_url)
         delete_profile_page.confirm_delete(password)
         
-         
+    @pytest.mark.need_review    
     def test_user_can_add_product_to_cart(self):
         link = product_link
         product_page = ProductPage(self.browser, link)
